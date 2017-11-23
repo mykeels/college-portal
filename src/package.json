@@ -10,5 +10,9 @@
   "license": "MIT",
   "dependencies": {
     "waterline": "^0.13.1-9"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.1.2",
+    "webpack": "^3.8.1"
   }
 }
