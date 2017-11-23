@@ -21,9 +21,14 @@ export default Waterline.Collection.extend({
             type: 'string',
             enum: ['male', 'female']
         },
-        phones: {
+        phones: { //one-to-many relationship with 'phone_number'
             collection: 'phone_number',
             via: 'user_id'
+        },
+        types: { //many-to-many relationship with 'user'
+            collection: 'user_type',
+            via: 'users',
+            dominant: true
         }
     }
 })
