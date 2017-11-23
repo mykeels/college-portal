@@ -1,0 +1,14 @@
+{
+  "name": "college-portal",
+  "version": "1.0.0",
+  "description": "A project for a college portal",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "waterline": "^0.13.1-9"
+  }
+}
