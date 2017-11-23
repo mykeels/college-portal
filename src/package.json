@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "sails-disk": "^0.10.10",
     "waterline": "^0.13.1-9"
   },
   "devDependencies": {
