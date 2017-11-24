@@ -3,6 +3,10 @@ import Waterline from 'waterline'
 export default Waterline.Collection.extend({
     identity: 'image',
     attributes: {
+        id: {
+            type: 'number',
+            required: true
+        },
         image_type: {
             model: 'image_type'
         },
@@ -18,5 +22,6 @@ export default Waterline.Collection.extend({
             type: 'boolean',
             required: true
         }
-    }
+    },
+    primaryKey: 'id'
 })

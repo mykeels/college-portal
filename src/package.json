@@ -10,8 +10,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "sails-disk": "^0.10.10",
-    "waterline": "^0.13.1-9"
+    "bcrypt": "^1.0.3",
+    "sails-disk": "1.0.0-11",
+    "waterline": "0.13.1-9"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
