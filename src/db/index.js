@@ -16,6 +16,14 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     operatorsAliases: false
   });
 
-RegisterUserModels(sequelize)
+export const {
+  User,
+  UserType,
+  Role,
+  PhoneNumber,
+  Action,
+  Image,
+  ImageType
+} = RegisterUserModels(sequelize)
 
 export default sequelize
