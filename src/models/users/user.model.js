@@ -1,51 +1,38 @@
-import Waterline from 'waterline'
+import Sequelize from 'sequelize'
+import PhoneNumber from './phone-number.model'
 
-export default Waterline.Collection.extend({
-    identity: 'user',
-    attributes: {
-        id: {
-            type: 'number',
-            required: true
-        },
-        email: {
-            type: 'string',
-            required: true
-        },
-        pwd: {
-            type: 'string',
-            required: true
-        },
-        creation_date: {
-            type: 'ref',
-            autoCreatedAt: true
-        },
-        gender: {
-            type: 'string',
-            required: true
-        },
-        phones: { //one-to-many relationship with 'phone_number'
-            collection: 'phone_number',
-            via: 'user_id'
-        },
-        types: { //many-to-many relationship with 'user'
-            collection: 'user_type',
-            via: 'users',
-            dominant: true
-        }
+const User = Sequelize.define('user', {
+    id: {
+        type: Sequelize.NUMBER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    beforeCreate(values, next) {
-        const bcrypt = require('bcrypt')
-
-        bcrypt.genSalt(10, (err, salt) => {
-            if (err) return next(err)
-
-            bcrypt.hash(values.pwd, salt, (err, hash) => {
-                if (err) return next(err)
-
-                values.pwd = hash
-                next()
-            })
-        })
+    email: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false
     },
-    primaryKey: 'id'
+    pwd: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    creation_date: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+    },
+    gender: {
+        type: Sequelize.ENUM,
+        values: ['male', 'female']
+    },
+    types: { //many-to-many relationship with 'user'
+        collection: 'user_type',
+        via: 'users',
+        dominant: true
+    }
 })
+
+User.hasMany(PhoneNumber, {
+    as: 'phones'
+})
+
+export default User
