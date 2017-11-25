@@ -1,3 +1,7 @@
+/**
+ * Users have types like Staff, Student, Admin, etc
+ */
+
 import Sequelize from 'sequelize'
 
 export default (sequelize) => {

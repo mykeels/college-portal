@@ -1,3 +1,7 @@
+/**
+ * Images have different Types
+ */
+
 import Sequelize from 'sequelize'
 
 export default (sequelize) => {

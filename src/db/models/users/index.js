@@ -1,3 +1,7 @@
+/**
+ * DB Models for Users
+ */
+
 import GetUser from './user.model'
 import GetUserType from './user-type.model'
 import GetUserHasRole from './user-has-role.model'

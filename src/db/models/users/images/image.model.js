@@ -1,3 +1,7 @@
+/**
+ * Users can have images
+ */
+
 import Sequelize from 'sequelize'
 
 export default (sequelize, User, ImageType) => {
