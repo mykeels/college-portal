@@ -1,26 +1,22 @@
-import Waterline from 'waterline'
+import Sequelize from 'sequelize'
 
-export default Waterline.Collection.extend({
-    identity: 'phone_number',
-    attributes: {
-        id: {
-            type: 'number',
-            required: true
-        },
-        user_id: {
-            model: 'user'
-        },
-        phone: {
-            type: 'string',
-            required: true
-        },
-        creation_date: {
-            type: 'ref',
-            autoCreatedAt: true
-        },
-        active: {
-            type: 'boolean'
-        }
+export default Sequelize.define('phone_number', {
+    id: {
+        type: Sequelize.NUMBER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    primaryKey: 'id'
+    phone: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    creation_date: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false
+    },
+    active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+    }
 })
