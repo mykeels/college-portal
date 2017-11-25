@@ -3,7 +3,7 @@ import Sequelize from 'sequelize'
 export default (sequelize, UserType, Action) => {
     const Role = sequelize.define('role', {
         id: {
-            type: Sequelize.NUMBER,
+            type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },

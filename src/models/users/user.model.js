@@ -3,7 +3,7 @@ import Sequelize from 'sequelize'
 export default (sequelize, PhoneNumber, UserType) => {
     const User = sequelize.define('user', {
         id: {
-            type: Sequelize.NUMBER,
+            type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
@@ -23,11 +23,6 @@ export default (sequelize, PhoneNumber, UserType) => {
         gender: {
             type: Sequelize.ENUM,
             values: ['male', 'female']
-        },
-        types: { //many-to-many relationship with 'user'
-            collection: 'user_type',
-            via: 'users',
-            dominant: true
         }
     })
     

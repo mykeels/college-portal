@@ -12,8 +12,8 @@ export default (sequelize) => {
     const User = GetUser(sequelize, PhoneNumber, UserType)
     const Action = GetAction(sequelize)
     const Role = GetRole(sequelize, UserType, Action)
-    const Image = GetImage(sequelize, User, ImageType)
     const ImageType = GetImageType(sequelize)
+    const Image = GetImage(sequelize, User, ImageType)
 
     return {
         User,

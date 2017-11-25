@@ -3,7 +3,7 @@ import Sequelize from 'sequelize'
 export default (sequelize) => {
     const PhoneNumber = sequelize.define('phone_number', {
         id: {
-            type: Sequelize.NUMBER,
+            type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },

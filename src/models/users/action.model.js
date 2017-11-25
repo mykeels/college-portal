@@ -4,7 +4,7 @@ import UserType from './user-type.model'
 export default ((sequelize) => {
     return sequelize.define('action', {
         id: {
-            type: Sequelize.NUMBER,
+            type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },

@@ -3,7 +3,7 @@ import Sequelize from 'sequelize'
 export default (sequelize, User, ImageType) => {
     const Image = sequelize.define('image', {
         id: {
-            type: Sequelize.NUMBER,
+            type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
