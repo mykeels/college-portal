@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize'
 
-export default (sequelize = new Sequelize(), PhoneNumber, UserType) => {
+export default (sequelize = new Sequelize(), PhoneNumber) => {
     const User = sequelize.define('user', {
         id: {
             type: Sequelize.INTEGER,
