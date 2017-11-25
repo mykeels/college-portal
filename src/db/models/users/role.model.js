@@ -13,9 +13,7 @@ export default (sequelize, UserType, Action) => {
         }
     })
     
-    Role.belongsTo(UserType, {
-        as: 'user_type'
-    })
+    Role.belongsTo(UserType)
     
     Role.hasMany(Action, {
         as: 'actions'

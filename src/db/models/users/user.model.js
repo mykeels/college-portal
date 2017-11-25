@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize'
 
-export default (sequelize, PhoneNumber, UserType) => {
+export default (sequelize = new Sequelize(), PhoneNumber, UserType) => {
     const User = sequelize.define('user', {
         id: {
             type: Sequelize.INTEGER,
@@ -28,10 +28,6 @@ export default (sequelize, PhoneNumber, UserType) => {
     
     User.hasMany(PhoneNumber, {
         as: 'phones'
-    })
-    
-    User.hasMany(UserType, {
-        as: 'types'
     })
     
     return User
