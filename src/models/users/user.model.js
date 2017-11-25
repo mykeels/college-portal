@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize'
 import PhoneNumber from './phone-number.model'
+import UserType from './user-type.model'
 
 const User = Sequelize.define('user', {
     id: {
@@ -33,6 +34,10 @@ const User = Sequelize.define('user', {
 
 User.hasMany(PhoneNumber, {
     as: 'phones'
+})
+
+User.hasMany(UserType, {
+    as: 'types'
 })
 
 export default User

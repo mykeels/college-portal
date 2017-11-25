@@ -1,24 +1,25 @@
-import Waterline from 'waterline'
+import Sequelize from 'sequelize'
+import User from './user.model'
+import Role from './role.model'
 
-export default Waterline.Collection.extend({
-    identity: 'user_type',
-    attributes: {
-        id: {
-            type: 'number',
-            required: true
-        },
-        name: {
-            type: 'string',
-            required: true
-        },
-        users: {
-            collection: 'user',
-            via: 'types'
-        },
-        roles: {
-            collection: 'role',
-            via: 'user_type_id'
-        }
+const UserType = Sequelize.define('user_type', {
+    id: {
+        type: Sequelize.NUMBER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    primaryKey: 'id'
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
 })
+
+UserType.hasMany(User, {
+    as: 'users'
+})
+
+UserType.hasMany(Role, {
+    as: 'roles'
+})
+
+export default UserType

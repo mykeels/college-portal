@@ -1,19 +1,25 @@
-import Waterline from 'waterline'
+import Sequelize from 'sequelize'
+import UserType from './user-type.model'
+import Action from './action.model'
 
-export default Waterline.Collection.extend({
-    identity: 'role',
-    attributes: {
-        id: {
-            type: 'number',
-            required: true
-        },
-        user_type_id: {
-            model: 'user_type'
-        },
-        name: {
-            type: 'string',
-            required: true
-        }
+const Role = Sequelize.define('role', {
+    id: {
+        type: Sequelize.NUMBER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    primaryKey: 'id'
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
 })
+
+Role.belongsTo(UserType, {
+    as: 'user_type'
+})
+
+Role.hasMany(Action, {
+    as: 'actions'
+})
+
+export default Role

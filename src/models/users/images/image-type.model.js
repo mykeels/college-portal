@@ -1,20 +1,22 @@
-import Waterline from 'waterline'
+import Sequelize from 'sequelize'
+import Image from './image.model'
 
-export default Waterline.Collection.extend({
-    identity: 'image_type',
-    attributes: {
-        id: {
-            type: 'number',
-            required: true
-        },
-        name: {
-            type: 'string',
-            required: true
-        },
-        images: {
-            collection: 'image',
-            via: 'image_type'
-        }
+const ImageType = Sequelize.define('image_type', {
+    id: {
+        type: Sequelize.NUMBER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    primaryKey: 'id'
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    width: Sequelize.NUMBER,
+    height: Sequelize.NUMBER
 })
+
+ImageType.hasMany(Image, {
+    as: 'images'
+})
+
+export default ImageType

@@ -1,22 +1,17 @@
-import Waterline from 'waterline'
+import Sequelize from 'sequelize'
+import UserType from './user-type.model'
 
-export default Waterline.Collection.extend({
-    identity: 'action',
-    attributes: {
-        id: {
-            type: 'number',
-            required: true
-        },
-        user_type_id: {
-            model: 'user_type'
-        },
-        name: {
-            type: 'string',
-            required: true
-        },
-        description: {
-            type: 'string'
-        }
+export default Sequelize.define('action', {
+    id: {
+        type: Sequelize.NUMBER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    primaryKey: 'id'
+    name: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    description: {
+        type: Sequelize.STRING
+    }
 })

@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize'
 
-export default Sequelize.define('phone_number', {
+const PhoneNumber = Sequelize.define('phone_number', {
     id: {
         type: Sequelize.NUMBER,
         primaryKey: true,
@@ -20,3 +20,5 @@ export default Sequelize.define('phone_number', {
         allowNull: false
     }
 })
+
+export default PhoneNumber
