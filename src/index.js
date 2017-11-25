@@ -1,43 +1,26 @@
-import Waterline from 'waterline'
+import Sequelize from 'sequelize'
 import config from './index.config'
 import fs from 'fs'
 import path from 'path'
+import DotEnv from 'dotenv'
+import RegisterUserModels from './models/users'
 
-const orm = new Waterline()
+DotEnv.config()
 
-const getModelFiles = (dir) => fs.readdirSync(path.join(__dirname, dir))
-                                    .map(file => path.join(__dirname, dir + '/' + file))
+console.log(process.env.DB_HOST)
 
-getModelFiles('models/users')
-    .concat('models/users/images')
-    .forEach(file => {
-        if (/\.model\.js$/.test(file))
-            orm.registerModel(require(file).default)
-    })
+const sequelize = new Sequelize(process.env.DB_HOST, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+    operatorsAliases: false
+  });
 
-const db = {
-    waterline: orm,
-    config: config
-}
+RegisterUserModels(sequelize)
 
-db.waterline.initialize(db.config, (err, models) => {
-    if (err) throw err
-
-    console.log('db initialized')
-
-    models.collections.user.create({
-        id: 1,
-        email: 'test@mailinator.com',
-        pwd: '12345',
-        gender: 'male',
-        creation_date: new Date()
-    }).then(function (user) {
-        console.log(user)
-        return user
-    }).catch(function (err) {
-        console.error(err)
-    })
-
-})
-
-export default db
+sequelize.sync()
