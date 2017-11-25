@@ -1,19 +1,27 @@
-import User from './user.model'
-import UserType from './user-type.model'
-import Role from './role.model'
-import PhoneNumber from './phone-number.model'
-import Action from './action.model'
-import Image from './images/image.model'
-import ImageType from './images/image-type.model'
+import GetUser from './user.model'
+import GetUserType from './user-type.model'
+import GetRole from './role.model'
+import GetPhoneNumber from './phone-number.model'
+import GetAction from './action.model'
+import GetImage from './images/image.model'
+import GetImageType from './images/image-type.model'
 
 export default (sequelize) => {
+    const PhoneNumber = GetPhoneNumber(sequelize)
+    const UserType = GetUserType(sequelize)
+    const User = GetUser(sequelize, PhoneNumber, UserType)
+    const Action = GetAction(sequelize)
+    const Role = GetRole(sequelize, UserType, Action)
+    const Image = GetImage(sequelize, User, ImageType)
+    const ImageType = GetImageType(sequelize)
+
     return {
-        User: User(sequelize),
-        UserType: UserType(sequelize),
-        Role: Role(sequelize),
-        PhoneNumber: PhoneNumber(sequelize),
-        Action: Action(sequelize),
-        Image: Image(sequelize),
-        ImageType: ImageType(sequelize)
+        User,
+        UserType,
+        Role,
+        PhoneNumber,
+        Action,
+        Image,
+        ImageType
     }
 }
