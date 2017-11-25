@@ -59,3 +59,4 @@ typings/
 .env
 .tmp
 .DS_STORE
+launch.json
