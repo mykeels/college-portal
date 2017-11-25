@@ -1,3 +1,7 @@
+/**
+ * Allows for many-to-many relationship between Role and Action
+ */
+
 import Sequelize from 'sequelize'
 
 export default (sequelize, Role, Action) => {

@@ -1,3 +1,7 @@
+/**
+ * Allows for many-to-many relationship between User and Role
+ */
+
 import Sequelize from 'sequelize'
 
 export default (sequelize = new Sequelize(), User, Role) => {
