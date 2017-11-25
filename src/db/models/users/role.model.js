@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize'
 
-export default (sequelize, UserType, Action) => {
+export default (sequelize, UserType) => {
     const Role = sequelize.define('role', {
         id: {
             type: Sequelize.INTEGER,
@@ -14,10 +14,6 @@ export default (sequelize, UserType, Action) => {
     })
     
     Role.belongsTo(UserType)
-    
-    Role.hasMany(Action, {
-        as: 'actions'
-    })
 
     return Role
 }
