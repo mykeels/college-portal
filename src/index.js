@@ -1,7 +1,4 @@
 import Sequelize from 'sequelize'
-import config from './index.config'
-import fs from 'fs'
-import path from 'path'
 import DotEnv from 'dotenv'
 import RegisterUserModels from './models/users'
 
@@ -25,3 +22,4 @@ sequelize.sync().then(() => {
   console.log('db migrations successful!')
 })
 
+export default sequelize
