@@ -4,7 +4,10 @@ import 'babel-polyfill'
 
 export default (Action, Event) => {
     const raiseEvent = (name, ...args) => {
-        console.log('raise-event:', name, (args.filter(arg => arg instanceof Error)[0] || {}).name || (args.filter(arg => arg.constructor.name === 'Number')[0]))
+        console.log('raise-event:', name, 
+                (args.filter(arg => arg instanceof Error)[0] || {}).name || 
+                (args.filter(arg => ((arg || {}).constructor || {}).name === 'Number')[0]) ||
+                args.map(arg => ((arg || {}).constructor || {}).name).join(' '))
         Event.emit(name, ...args)   
     }
 
@@ -61,9 +64,9 @@ export default (Action, Event) => {
                 throw err
             }
             else {
-                raiseEvent(Events.UPDATE_SUCCESSFUL, affectedRows ? affectedRows.dataValues : null)
+                raiseEvent(Events.UPDATE_SUCCESSFUL, affectedRows)
             }
-            return affectedRows ? affectedRows.dataValues : null
+            return affectedRows
         },
         /**
          * deletes an item / some items in the db
