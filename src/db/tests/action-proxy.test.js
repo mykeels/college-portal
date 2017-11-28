@@ -1,10 +1,10 @@
-const {assert} = require('chai')
-
 import db, { Action } from '../'
-
 import GetProxy from '../proxies'
 
+const { assert } = require('chai')
 const { ActionProxy, Events } = GetProxy(db, { Action })
+
+const ACTION_NAME = 'create-user'
 
 const isDataProxy = (proxy = ActionProxy) => {
     assert.isNotNull(proxy)
@@ -21,14 +21,26 @@ describe('ActionProxy', () => {
     })
 
     it('getById(-1) should return NULL', () => {
-        ActionProxy.getById(-1, (action) => {
+        ActionProxy.getById(-1, (err, action) => {
+            assert.isNull(err)
             assert.isNull(action)
+        })
+    })
+    
+    it('getAll() should return items', () => {
+        ActionProxy.getAll((err, actions) => {
+            assert.isNull(err)
+            assert.isArray(actions)
+            actions.forEach(action => {
+                assert.isTrue(!!action.id)
+                assert.isTrue(!!action.name)
+            })
         })
     })
     
     it('insert(action) should work', () => {
         ActionProxy.insert({
-            name: 'create-user',
+            name: ACTION_NAME,
             description: 'This user can create another'
         }, (err, action) => {
             if (err) {
@@ -40,6 +52,22 @@ describe('ActionProxy', () => {
             }
         }).catch(err => {
             console.error(err.name)
+        })
+    })
+
+    it(`getById(1) should return an action "${ACTION_NAME}"`, () => {
+        ActionProxy.getById(1, (err, savedAction) => {
+            assert.isNull(err)
+            if (savedAction) {
+                assert.equal(savedAction.dataValues.name, ACTION_NAME)
+            }
+        })
+    })
+    
+    it(`destroy(1) should return a boolean`, () => {
+        ActionProxy.destroy(1, (err, savedAction) => {
+            assert.isNull(err)
+            assert.isTrue(savedAction)
         })
     })
 })

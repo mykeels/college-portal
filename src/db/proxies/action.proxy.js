@@ -12,7 +12,7 @@ export default (Action, Event) => {
 
     return {
         getAll(done) {
-            return Action.findAll({}).then((actions) => done(null, actions)).catch(err => done(err))
+            return Action.findAll({}).then((actions) => done(null, actions.map(action => action.dataValues))).catch(err => done(err))
         },
         getById(id, done) {
             return Action.findById(id, {}).then(data => done(null, data)).catch(err => done(err))
