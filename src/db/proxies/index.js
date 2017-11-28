@@ -5,7 +5,7 @@
 import GetActionProxy from './action.proxy'
 import Events, { raiseEvent, EventEmitter } from '../events'
 
-export default (sequelize, models) => {
+export default (models) => {
 
     const Action = models.Action
 

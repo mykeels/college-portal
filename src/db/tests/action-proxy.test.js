@@ -2,7 +2,7 @@ import db, { Action } from '../'
 import GetProxy from '../proxies'
 
 const { assert } = require('chai')
-const { ActionProxy, Events } = GetProxy(db, { Action })
+const { ActionProxy, Events } = GetProxy({ Action })
 
 const ACTION_NAME = 'create-user'
 
