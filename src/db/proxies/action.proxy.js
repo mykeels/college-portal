@@ -1,9 +1,10 @@
 import Sequelize from 'sequelize'
+import catchErrors from '../helpers/catch-errors'
+import 'babel-polyfill'
 
 export default (Action, Event) => {
-    const raiseEvent = (name, callback, ...args) => {
-        callback(...args)
-        console.log('raise-event:', name, (args.filter(arg => arg instanceof Error)[0] || {}).name)
+    const raiseEvent = (name, ...args) => {
+        console.log('raise-event:', name, (args.filter(arg => arg instanceof Error)[0] || {}).name || (args.filter(arg => arg.constructor.name === 'Number')[0]))
         Event.emit(name, ...args)   
     }
 
@@ -11,40 +12,84 @@ export default (Action, Event) => {
     if (!Event) throw new Error('Event parameter must be a valid EventEmitter instance')
 
     return {
-        getAll(done) {
-            return Action.findAll({}).then((actions) => done(null, actions.map(action => action.dataValues))).catch(err => done(err))
+        /**
+         * retrieves all items from the db matching the filter
+         * @param {*} filter sequelize filter options
+         */
+        async getAll(filter = {}) {
+            const actions = await Action.findAll(filter)
+            return actions.map(action => action.dataValues)
         },
-        getById(id, done) {
-            return Action.findById(id, {}).then(data => done(null, data)).catch(err => done(err))
+        /**
+         * retrieves one item from the db if its id matches the id specified
+         * @param {Number} id the identifier
+         */
+        async getById(id) {
+            const action = await Action.findById(id, {})
+            return action ? action.dataValues : null
         },
-        insert(data, done) {
-            return Action.create(data, {}).then(savedData => raiseEvent(Events.CREATION_SUCCESSFUL, (data) => done(null, data), savedData))
-                                            .catch(err => raiseEvent(Events.CREATION_ERROR, done, err))
+        /**
+         * inserts a single item to the db
+         * @param {*} data the information to be inserted
+         * @param {*} options sequelize insert options/constraints
+         */
+        async insert(data, options = {}) {
+            const [err, action] = await catchErrors(Action.create(data, options))
+            if (err) {
+                raiseEvent(Events.INSERT_ERROR, err)
+                throw err
+            }
+            else {
+                raiseEvent(Events.INSERT_SUCCESSFUL, action ? action.dataValues : null)
+            }
+            return action ? action.dataValues : null
         },
-        update(data, done) {
-            return Action.update(data, {
+        /**
+         * updates a single item in the db
+         * @param {Object} data the information to be inserted
+         * @param {Number} data.id - the identifier for the data you wish to update
+         * @param {*} options additional sequelize options/constraints
+         */
+        async update(data, options = {}) {
+            const [err, affectedRows] = await catchErrors(Action.update(data, {...options, ...{
                 where: {
                     id: data.id
                 }
-            }).then(affectedRows => Promise.resolve(this.getById(data.id, (err, obj) => {
-                if (obj) raiseEvent(Events.UPDATE_SUCCESSFUL, (obj2) => done(null, obj2), obj)
-                else raiseEvent(Events.UPDATE_ERROR, (err2) => done(err2), err)
-            }))).catch(err => raiseEvent(Events.UPDATE_ERROR, done, err))
+            }}))
+            if (err) {
+                raiseEvent(Events.UPDATE_ERROR, err)
+                throw err
+            }
+            else {
+                raiseEvent(Events.UPDATE_SUCCESSFUL, affectedRows ? affectedRows.dataValues : null)
+            }
+            return affectedRows ? affectedRows.dataValues : null
         },
-        destroy(id, done) {
-            return Action.destroy({
+        /**
+         * deletes an item / some items in the db
+         * @param {Number} id the identifier of the item to be deleted
+         */
+        async destroy(id) {
+            const [err, success] = await catchErrors(Action.destroy({
                 where: {
                     id: id
-                },
-                paranoid: true
-            }).then(data => done(null, data || true)).catch(err => done(err))
+                }
+            }))
+            if (err) {
+                raiseEvent(Events.DELETE_ERROR, err)
+                throw err
+            }
+            else {
+                raiseEvent(Events.DELETE_SUCCESSFUL, success)
+            }
+            return success
         }
     }
 }
 
 export const Events = {
-    CREATION_SUCCESSFUL: 'db:action:creation:success',
-    CREATION_ERROR: 'db:action:creation:error',
+    INSERT_SUCCESSFUL: 'db:action:insert:success',
+    INSERT_ERROR: 'db:action:insert:error',
     UPDATE_SUCCESSFUL: 'db:action:update:success',
     UPDATE_ERROR: 'db:action:update:error',
     DELETE_SUCCESSFUL: 'db:action:delete:success',

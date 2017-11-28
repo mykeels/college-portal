@@ -21,20 +21,33 @@ describe('ActionProxy', () => {
     })
 
     it('getById(-1) should return NULL', () => {
-        ActionProxy.getById(-1, (err, action) => {
-            assert.isNull(err)
+        ActionProxy.getById(-1).then((action) => {
             assert.isNull(action)
+        }).catch(err => {
+            assert.isNull(err)
+        })
+    })
+    
+    it(`getById(1) should return an action "${ACTION_NAME}"`, () => {
+        ActionProxy.getById(31).then(savedAction => {
+            if (savedAction) {
+                assert.equal(savedAction.name, ACTION_NAME)
+            }
+        }).catch(err => {
+            assert.isNull(err)
         })
     })
     
     it('getAll() should return items', () => {
-        ActionProxy.getAll((err, actions) => {
-            assert.isNull(err)
+        ActionProxy.getAll({}).then((actions) => {
             assert.isArray(actions)
             actions.forEach(action => {
-                assert.isTrue(!!action.id)
-                assert.isTrue(!!action.name)
+                assert.isDefined(action)
+                assert.isDefined(!!action.id)
+                assert.isDefined(!!action.name)
             })
+        }).catch(err => {
+            assert.isNull(err)
         })
     })
     
@@ -42,30 +55,28 @@ describe('ActionProxy', () => {
         ActionProxy.insert({
             name: ACTION_NAME,
             description: 'This user can create another'
-        }, (err, action) => {
-            if (err) {
-                assert.equal(err.name, 'SequelizeUniqueConstraintError')
-            }
-            else {
-                assert.isNotNull(action)
-                assert.isNotNull(action.dataValues)
-            }
+        }).then(action => {
+            assert.isNotNull(action)
+            assert.isNotNull(action.dataValues)
         }).catch(err => {
-            console.error(err.name)
-        })
-    })
-
-    it(`getById(1) should return an action "${ACTION_NAME}"`, () => {
-        ActionProxy.getById(1, (err, savedAction) => {
-            assert.isNull(err)
-            if (savedAction) {
-                assert.equal(savedAction.dataValues.name, ACTION_NAME)
-            }
+            assert.equal(err.name, 'SequelizeUniqueConstraintError')
         })
     })
     
-    it(`destroy(1) should return a boolean`, () => {
-        ActionProxy.destroy(1, (err, savedAction) => {
+    it('insert(action) should work', () => {
+        ActionProxy.insert({
+            name: ACTION_NAME,
+            description: 'This user can create another'
+        }).then(action => {
+            assert.isNotNull(action)
+            assert.isNotNull(action.dataValues)
+        }).catch(err => {
+            assert.equal(err.name, 'SequelizeUniqueConstraintError')
+        })
+    })
+    
+    it(`destroy(31) should return a boolean`, () => {
+        ActionProxy.destroy(31, (err, savedAction) => {
             assert.isNull(err)
             assert.isTrue(savedAction)
         })
