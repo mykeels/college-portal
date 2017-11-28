@@ -12,4 +12,10 @@ For now, all we have are migration scripts for our user-and-roles systems
 
 - `npm install`
 
-- `npm start` should crate the tables and relationships in your DB
+- `npm run migrate` should create the tables and relationships in your DB
+
+### Testing
+
+- Test scripts should be in the format: `<script-name>.test.js`
+
+- Run `npm test` in your terminal to run the tests, to guide you when modifying code
