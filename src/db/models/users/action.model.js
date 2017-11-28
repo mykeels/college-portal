@@ -6,9 +6,8 @@
  */
 
 import Sequelize from 'sequelize'
-import UserType from './user-type.model'
 
-export default ((sequelize) => {
+export default ((sequelize = new Sequelize()) => {
     return sequelize.define('action', {
         id: {
             type: Sequelize.INTEGER,
