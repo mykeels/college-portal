@@ -16,7 +16,8 @@ export default ((sequelize = new Sequelize()) => {
         },
         name: {
             type: Sequelize.STRING,
-            allowNull: true
+            allowNull: false,
+            unique: true
         },
         description: {
             type: Sequelize.STRING

@@ -5,23 +5,14 @@
 import GetActionProxy from './action.proxy'
 import Events, { raiseEvent, EventEmitter } from '../events'
 
-export default (sequelize) => {
-    const {
-            User,
-            UserType,
-            UserHasType,
-            Role,
-            UserHasRole,
-            PhoneNumber,
-            Action,
-            RolePerformsAction,
-            Image,
-            ImageType
-    } = require('../models/users')
+export default (sequelize, models) => {
+
+    const Action = models.Action
 
     const ActionProxy = GetActionProxy(Action, Events)
 
     return {
-        ActionProxy
+        ActionProxy,
+        Events
     }
 }

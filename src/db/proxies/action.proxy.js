@@ -1,9 +1,10 @@
 import Sequelize from 'sequelize'
 
-export default (Action = (new Sequelize()).define(), Event = require('../events')) => {
+export default (Action, Event) => {
     const raiseEvent = (name, callback, ...args) => {
         callback(...args)
-        Events.emit(name, ...args)   
+        console.log('raise-event:', name, (args.filter(arg => arg instanceof Error)[0] || {}).name)
+        Event.emit(name, ...args)   
     }
 
     if (!Action) throw new Error('Action parameter must be a valid sequelize model')
