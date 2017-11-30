@@ -13,6 +13,7 @@ const isDataProxy = (proxy = ActionProxy) => {
     assert.isFunction(proxy.getById)
     assert.isFunction(proxy.insert)
     assert.isFunction(proxy.update)
+    assert.isFunction(proxy.exists)
 }
 
 describe('ActionProxy', () => {
@@ -93,9 +94,10 @@ describe('ActionProxy', () => {
     
     it(`destroy(id) should return a boolean`, () => {
         return getLastAction().then(lastAction => {
-            ActionProxy.destroy(lastAction.id, (err, savedAction) => {
+            ActionProxy.destroy(lastAction.id).then((success) => {
+                assert.isTrue(success)
+            }).catch(err => {
                 assert.isNull(err)
-                assert.isTrue(savedAction)
             })
         })
     })
