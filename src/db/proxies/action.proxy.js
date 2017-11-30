@@ -4,10 +4,10 @@ import 'babel-polyfill'
 
 export default (Action, Event) => {
     const raiseEvent = (name, ...args) => {
-        console.log('raise-event:', name, 
-                (args.filter(arg => arg instanceof Error)[0] || {}).name || 
-                (args.filter(arg => ((arg || {}).constructor || {}).name === 'Number')[0]) ||
-                args.map(arg => ((arg || {}).constructor || {}).name).join(' '))
+        // console.log('raise-event:', name, 
+        //         (args.filter(arg => arg instanceof Error)[0] || {}).name || 
+        //         (args.filter(arg => ((arg || {}).constructor || {}).name === 'Number')[0]) ||
+        //         args.map(arg => ((arg || {}).constructor || {}).name).join(' '))
         Event.emit(name, ...args)   
     }
 
