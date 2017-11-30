@@ -20,10 +20,6 @@ export default (sequelize = new Sequelize(), PhoneNumber) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        creation_date: {
-            type: Sequelize.DATE,
-            defaultValue: Sequelize.NOW
-        },
         gender: {
             type: Sequelize.ENUM,
             values: ['male', 'female']
@@ -35,7 +31,8 @@ export default (sequelize = new Sequelize(), PhoneNumber) => {
      */
     
     User.hasMany(PhoneNumber, {
-        as: 'phones'
+        as: 'phones',
+        foreignKeyConstraint: true
     })
     
     return User
