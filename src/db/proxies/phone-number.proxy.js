@@ -5,10 +5,10 @@ import 'babel-polyfill'
 
 export default (UserProxy, PhoneModel, Event) => {
     const raiseEvent = (name, ...args) => {
-        console.log('raise-event:', name, 
-                (args.filter(arg => arg instanceof Error)[0] || {}).name || 
-                (args.filter(arg => ((arg || {}).constructor || {}).name === 'Number')[0]) ||
-                args.map(arg => ((arg || {}).constructor || {}).name).join(' '))
+        // console.log('raise-event:', name, 
+        //         (args.filter(arg => arg instanceof Error)[0] || {}).name || 
+        //         (args.filter(arg => ((arg || {}).constructor || {}).name === 'Number')[0]) ||
+        //         args.map(arg => ((arg || {}).constructor || {}).name).join(' '))
         Event.emit(name, ...args)   
     }
 
@@ -21,8 +21,8 @@ export default (UserProxy, PhoneModel, Event) => {
     const confirmUserExists = (userId) => {
         return new Promise((resolve, reject) => {
             UserProxy.exists(userId).then(userExists => {
-                if (userExists) resolve(userExists)
-                else reject(new UserNotExistsError())
+                if (!userExists) throw new UserNotExistsError()
+                else resolve(userExists)
             }).catch(err => {
                 reject(err)
             })

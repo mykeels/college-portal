@@ -9,20 +9,14 @@ const USER_EMAIL = 'abc@mailinator.com'
 const USER_PASSWORD = 'password'
 const USER_GENDER = 'male'
 
-const isDataProxy = (proxy = PhoneProxy) => {
-    assert.isNotNull(proxy)
-    assert.isFunction(proxy.destroy)
-    assert.isFunction(proxy.getAll)
-    assert.isFunction(proxy.getById)
-    assert.isFunction(proxy.getSingle)
-    assert.isFunction(proxy.insert)
-    assert.isFunction(proxy.update)
-    assert.isFunction(proxy.exists)
-}
+const { isDataProxy } = require('./helpers')
 
 describe('PhoneProxy', () => {
 
     it('should be a valid Data Proxy', () => {
+        /**
+         * ensure that the data-proxy contains all valid functions
+         */
         return isDataProxy(PhoneProxy)
     })
 
@@ -30,6 +24,9 @@ describe('PhoneProxy', () => {
         let createdUser = null
         
         before(() => {
+            /**
+             * create the user that has the phone-number
+             */
             return UserProxy.insert({
                 email: USER_EMAIL,
                 pwd: USER_PASSWORD,
@@ -44,6 +41,9 @@ describe('PhoneProxy', () => {
         })
     
         after(() => {
+            /**
+             * delete the user that was created before all tests
+             */
             return UserProxy.destroy(createdUser.id).then(success => {
     
             }).catch(err => {
@@ -52,6 +52,9 @@ describe('PhoneProxy', () => {
         })
 
         it('insert(phone) without userId should throw NullParamError', () => {
+            /**
+             * if an INSERT is attempted without a userId, a NullParamError should be thrown
+             */
             return PhoneProxy.insert({
                 phone: PHONE_NO
             }).then(phone => {
@@ -62,20 +65,39 @@ describe('PhoneProxy', () => {
             })
         })
         
+        it('insert(phone) with a userId that does not exist should throw UserNotExistsError', () => {
+            /**
+             * if an INSERT is attempted with a userId that does not exist, a UserNotExistsError should be thrown
+             */
+            return PhoneProxy.insert({
+                phone: PHONE_NO,
+                userId: -1
+            }).then(phone => {
+                assert.isNotNull(phone)
+            }).catch(err => {
+                assert.equal(err.name, 'UserNotExistsError')
+            })
+        })
+        
         it('insert(phone) should work', () => {
+            /**
+             * an INSERT should be successful if it has the right params
+             */
             return PhoneProxy.insert({
                 phone: PHONE_NO,
                 userId: createdUser.id
             }).then(phone => {
                 assert.isNotNull(phone)
-                assert.isNotNull(phone.dataValues)
             }).catch(err => {
-                console.error(err)
+                assert.fail(err)
             })
         })
 
         describe('Others', () => {
             const getLastPhoneNumber = () => {
+                /**
+                 * retrieve the last added phone number
+                 */
                 return PhoneProxy.getAll({
                     limit: 1,
                     order: [ [ 'createdAt', 'DESC' ]]
@@ -90,18 +112,18 @@ describe('PhoneProxy', () => {
                 return PhoneProxy.getById(-1).then((phone) => {
                     assert.isNull(phone)
                 }).catch(err => {
-                    assert.isNull(err)
+                    assert.fail(err)
                 })
             })
             
             it(`getById(id) should return an phone "${PHONE_NO}"`, () => {
                 return getLastPhoneNumber().then(lastPhone => {
-                    PhoneProxy.getById(lastPhone.id).then(savedPhone => {
+                    return PhoneProxy.getById(lastPhone.id).then(savedPhone => {
                         if (savedPhone) {
-                            assert.equal(savedPhone.name, PHONE_NO)
+                            assert.equal(savedPhone.phone, PHONE_NO)
                         }
                     }).catch(err => {
-                        assert.isNull(err)
+                        assert.fail(err)
                     })
                 })
             })
@@ -115,13 +137,13 @@ describe('PhoneProxy', () => {
                         assert.isDefined(!!phone.name)
                     })
                 }).catch(err => {
-                    assert.isNull(err)
+                    assert.fail(err)
                 })
             })
             
             it('update(phone) should work', () => {
                 return getLastPhoneNumber().then(lastPhone => {
-                    PhoneProxy.update({
+                    return PhoneProxy.update({
                         id: lastPhone.id,
                         name: `${PHONE_NO}-modified`
                     }).then(rows => {
@@ -130,20 +152,20 @@ describe('PhoneProxy', () => {
                         assert.equal(err.name, 'SequelizeUniqueConstraintError')
                     })
                 }).catch(err => {
-                    assert.isNull(err, 'update(phone)')
+                    assert.fail(err)
                 })
             })
             
             it(`destroy(id) should return a boolean`, () => {
                 return getLastPhoneNumber().then(lastPhone => {
                     assert.isDefined(lastPhone, 'lastPhone should be defined')
-                    PhoneProxy.destroy(lastPhone.id).then((phone) => {
-                        assert.isTrue(phone)
+                    return PhoneProxy.destroy(lastPhone.id).then((success) => {
+                        assert.equal(success, 1)
                     }).catch(err => {
-                        assert.isNull(err)
+                        assert.fail(err)
                     })
                 }).catch(err => {
-                    assert.isNull(err, 'there should be no error during delete')
+                    assert.isNull(err)
                 })
             })
         })
