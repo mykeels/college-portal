@@ -24,12 +24,28 @@ export default (Action, Event) => {
             return actions.map(action => action.dataValues)
         },
         /**
+         * retrieves one item from the db if its data matches the filter specified
+         * @param {*} filter 
+         */
+        async getSingle(filter = {}) {
+            const actions = await this.getAll({ ...filter, ...{ limit: 1 } })
+            return (actions ? actions.dataValues : [])[0]
+        },
+        /**
          * retrieves one item from the db if its id matches the id specified
          * @param {Number} id the identifier
          */
         async getById(id) {
             const action = await Action.findById(id, {})
             return action ? action.dataValues : null
+        },
+        /**
+         * returns true or false indicating whether or not an item exists in the db with a specified id
+         * @param {Number} id the identifier
+         */
+        async exists(id) {
+            const action = await Action.findById(id, {})
+            return action && action.dataValues ? true : false
         },
         /**
          * inserts a single item to the db
