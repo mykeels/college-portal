@@ -19,10 +19,6 @@ export default (sequelize, User, ImageType) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        created_at: {
-            type: Sequelize.DATE,
-            defaultValue: Sequelize.NOW
-        },
         active: {
             type: Sequelize.BOOLEAN,
             allowNull: false
