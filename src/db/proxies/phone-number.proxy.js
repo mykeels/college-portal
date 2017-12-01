@@ -3,6 +3,11 @@ import catchErrors from '../helpers/catch-errors'
 import createError from '../helpers/errors'
 import 'babel-polyfill'
 
+/**
+ * @name 
+ * @description 
+ * @param {*} UserProxy An instance object that is a data proxy for the User sequelize model
+ */
 export default (UserProxy, PhoneModel, Event) => {
     const raiseEvent = (name, ...args) => {
         // console.log('raise-event:', name, 
@@ -69,7 +74,7 @@ export default (UserProxy, PhoneModel, Event) => {
          */
         async insert(data, options = {}) {
             if (data.userId) {
-                confirmUserExists(data.userId).then(async (exists) => {
+                return confirmUserExists(data.userId).then(async (exists) => {
                     const [err, phone] = await catchErrors(PhoneModel.create(data, options))
                     if (err) {
                         raiseEvent(Events.INSERT_ERROR, err)
