@@ -40,8 +40,20 @@ export default (sequelize = new Sequelize(), PhoneNumber) => {
         return hash(user.pwd).then(hashedPwd => {
             user.pwd = hashedPwd
         }).catch(err => {
-            console.log(err)
+            throw err
         })
+    })
+    
+    User.beforeBulkUpdate((instances, options) => {
+        if (instances.attributes && instances.attributes.pwd) {
+            return hash(instances.attributes.pwd).then(hashedPwd => {
+                instances.attributes.pwd = hashedPwd
+                console.log(hashedPwd)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+        return Promise.resolve(instance)
     })
     
     return User
