@@ -55,7 +55,7 @@ describe('ImageProxy', () => {
 
         after(() => {
             /**
-             * delete the userType that was created before all tests
+             * delete the user, then imageType that was created before all tests
              */
             return UserProxy.destroy(createdUser.id).then(success => {
                 return ImageTypeProxy.destroy(createdImageType.id).then(success => {
