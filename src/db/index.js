@@ -24,7 +24,10 @@ export const {
   PhoneNumber,
   Action,
   Image,
-  ImageType
+  ImageType,
+  UserHasRole,
+  UserHasType,
+  RolePerformsAction
 } = RegisterUserModels(sequelize)
 
 export default sequelize
