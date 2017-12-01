@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize'
 import catchErrors from '../helpers/catch-errors'
+import createError from '../helpers/errors'
 import 'babel-polyfill'
 
 export default (RoleProxy, ActionProxy, RolePerformsAction, Event) => {

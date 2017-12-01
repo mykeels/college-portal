@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize'
 import catchErrors from '../helpers/catch-errors'
+import createError from '../helpers/errors'
 import 'babel-polyfill'
 
 export default (UserTypeProxy, Role, Event) => {
@@ -11,7 +12,6 @@ export default (UserTypeProxy, Role, Event) => {
     if (!Event) throw new Error('Event parameter must be a valid EventEmitter instance')
     
     const UserTypeNotExistsError = createError('UserTypeNotExistsError')
-    const ImageTypeNotExistsError = createError('ImageTypeNotExistsError')
     const NullParamError = createError('NullParamError')
     
     const confirmUserTypeExists = (userTypeId) => {
