@@ -3,6 +3,7 @@
  */
 
 import Sequelize from 'sequelize'
+import { hash } from '../../helpers/hash'
 
 export default (sequelize = new Sequelize(), PhoneNumber) => {
     const User = sequelize.define('user', {
@@ -33,6 +34,14 @@ export default (sequelize = new Sequelize(), PhoneNumber) => {
     User.hasMany(PhoneNumber, {
         as: 'phones',
         foreignKeyConstraint: true
+    })
+
+    User.beforeCreate((user, options) => {
+        return hash(user.pwd).then(hashedPwd => {
+            user.pwd = hashedPwd
+        }).catch(err => {
+            console.log(err)
+        })
     })
     
     return User
