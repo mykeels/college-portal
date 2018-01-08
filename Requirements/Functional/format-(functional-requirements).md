@@ -3,15 +3,17 @@
 ## Format
 
 
-Entity Name
+### Entity Name
+
+* Function 1
+* Function 2 
+
+### Entity Name
+
+* Entity Type 1
 	* Function 1
-	* Function 2 …
+	* Function 2 
 
-Entity Name
-	* Entity Type 1
-		* Function 1
-		* Function 2 ...
-
-	* Entity Type 2
-		* Function 1
-		* Function 2 ...
+* Entity Type 2
+	* Function 1
+	* Function 2 
