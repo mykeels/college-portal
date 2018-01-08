@@ -1,13 +1,14 @@
 *This document is intended to give the format the Object Specification for API docs will take.*
 
-# Entity List
-	* Entity 1
-	* Entity 2 …
+## Entity List
+
+* Entity 1
+* Entity 2 
 
 ## Entity 1
 Give the Entity 1 Description here …
 
-| NAME			|TYPE		| DESCRIPTIOM               |
+| NAME			|TYPE		| DESCRIPTION               |
 |---------------|-----------|---------------------------|
 | PROPERTY 1	| Type 1	| Description of Property 1 |
 | PROPERTY 2	| Type 2	| Description of Property 2 |
