@@ -12,11 +12,15 @@ A requirements specification document gives a description of the conditions that
 
 Requirements Specification Documents are usually split into Functional and User Requirements:
 
-	* User Requirement
-	The User Requirements documents considers each possible User of the system, and lists all tasks that the user would expect the software to perform on his/her behalf.
+* User Requirement
 
-	* Functional Requirement
-	The Functional Requirements documents considers each component, entity or sub-system within the software and what tasks each will be expected to perform.
+The User Requirements documents considers each possible User of the system, and lists all tasks that the user
+would expect the software to perform on his/her behalf.
+
+* Functional Requirement
+
+The Functional Requirements documents considers each component, entity or sub-system within the software and
+what tasks each will be expected to perform.
 
 
 ## Object Specification
